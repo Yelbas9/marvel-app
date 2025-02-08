@@ -1,5 +1,12 @@
 import axios from "axios";
 
+const BASE_URL = import.meta.env.VITE_API_URL;
+
+export const getComics = async () => {
+  const response = await fetch(`${BASE_URL}/comics`);
+  return response.json();
+};
+
 const API_URL = "http://localhost:4000";
 
 const api = axios.create({
