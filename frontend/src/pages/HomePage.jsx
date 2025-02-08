@@ -22,9 +22,10 @@ const HomePage = () => {
 
         setCharacters(charactersResponse.data.results);
         setComics(comicsResponse.data.results);
-        setLoading(false);
       } catch (error) {
         console.error("Erreur lors de la récupération des données :", error);
+      } finally {
+        setLoading(false);
       }
     };
 
