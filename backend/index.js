@@ -15,9 +15,14 @@ app.use(cors());
 app.use(express.json());
 
 mongoose
-  .connect(process.env.MONGODB_URI)
-  .then(() => console.log("MongoDB connecté ✅"))
-  .catch((error) => console.error("Erreur MongoDB ❌", error));
+  .connect(process.env.MONGODB_URI, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  })
+  .then(() => console.log("✅ Connecté à MongoDB Atlas"))
+  .catch((error) =>
+    console.error("❌ Erreur de connexion MongoDB Atlas", error)
+  );
 
 const API_KEY = process.env.MARVEL_API_KEY;
 const BASE_URL = "https://lereacteur-marvel-api.herokuapp.com";
