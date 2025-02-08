@@ -2,15 +2,8 @@ import axios from "axios";
 
 const BASE_URL = import.meta.env.VITE_API_URL;
 
-export const getComics = async () => {
-  const response = await fetch(`${BASE_URL}/comics`);
-  return response.json();
-};
-
-const API_URL = "http://localhost:4000";
-
 const api = axios.create({
-  baseURL: API_URL,
+  baseURL: BASE_URL,
 });
 
 api.interceptors.request.use((config) => {
@@ -20,6 +13,11 @@ api.interceptors.request.use((config) => {
   }
   return config;
 });
+
+export const getComics = async () => {
+  const response = await api.get("/comics");
+  return response.data;
+};
 
 export const login = async (email, password) => {
   const response = await api.post("/auth/login", { email, password });
@@ -32,10 +30,7 @@ export const signup = async (email, password) => {
 };
 
 export const fetchFavorites = async () => {
-  const token = localStorage.getItem("token");
-  const response = await axios.get("http://localhost:4000/favorites", {
-    headers: { Authorization: token },
-  });
+  const response = await api.get("/favorites");
   return response.data;
 };
 
