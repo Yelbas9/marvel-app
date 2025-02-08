@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
 
+const BASE_URL = import.meta.env.VITE_API_URL;
+
 const HomePage = () => {
   const [characters, setCharacters] = useState([]);
   const [comics, setComics] = useState([]);
@@ -10,14 +12,11 @@ const HomePage = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const charactersResponse = await axios.get(
-          "http://localhost:4000/characters",
-          {
-            params: { limit: 10 },
-          }
-        );
+        const charactersResponse = await axios.get(`${BASE_URL}/characters`, {
+          params: { limit: 10 },
+        });
 
-        const comicsResponse = await axios.get("http://localhost:4000/comics", {
+        const comicsResponse = await axios.get(`${BASE_URL}/comics`, {
           params: { limit: 10 },
         });
 

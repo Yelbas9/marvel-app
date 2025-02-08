@@ -1,4 +1,3 @@
-// src/pages/FavoritesPage.jsx
 import React, { useEffect, useState } from "react";
 import { fetchFavorites, toggleFavorite } from "../services/api";
 import ComicCard from "../components/ComicCard";
@@ -22,7 +21,6 @@ const FavoritesPage = () => {
   const handleRemoveFavorite = async (item) => {
     try {
       await toggleFavorite(item._id, item.title ? "comicId" : "characterId");
-
       setFavorites((prevFavorites) =>
         prevFavorites.filter((fav) => fav._id !== item._id)
       );

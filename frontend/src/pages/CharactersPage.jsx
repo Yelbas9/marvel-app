@@ -4,6 +4,20 @@ import axios from "axios";
 import CharacterCard from "../components/CharacterCard";
 import SearchBar from "../components/SearchBar";
 
+const BASE_URL = import.meta.env.VITE_API_URL;
+
+const api = axios.create({
+  baseURL: BASE_URL,
+});
+
+api.interceptors.request.use((config) => {
+  const token = localStorage.getItem("token");
+  if (token) {
+    config.headers.Authorization = token;
+  }
+  return config;
+});
+
 const CharactersPage = () => {
   const [characters, setCharacters] = useState([]);
   const [favorites, setFavorites] = useState([]);
@@ -19,7 +33,7 @@ const CharactersPage = () => {
   useEffect(() => {
     const fetchCharacters = async () => {
       try {
-        const response = await axios.get("http://localhost:4000/characters", {
+        const response = await api.get("/characters", {
           params: {
             name: search,
             limit: itemsPerPage,
@@ -40,7 +54,7 @@ const CharactersPage = () => {
     const fetchFavorites = async () => {
       if (token) {
         try {
-          const response = await axios.get("http://localhost:4000/favorites", {
+          const response = await api.get("/favorites", {
             headers: { Authorization: token },
           });
           setFavorites(response.data);
@@ -60,8 +74,8 @@ const CharactersPage = () => {
       return;
     }
     try {
-      await axios.post(
-        "http://localhost:4000/favorites",
+      await api.post(
+        "/favorites",
         { characterId },
         { headers: { Authorization: token } }
       );

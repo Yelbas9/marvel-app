@@ -3,6 +3,20 @@ import axios from "axios";
 import ComicCard from "../components/ComicCard";
 import SearchBar from "../components/SearchBar";
 
+const BASE_URL = import.meta.env.VITE_API_URL;
+
+const api = axios.create({
+  baseURL: BASE_URL,
+});
+
+api.interceptors.request.use((config) => {
+  const token = localStorage.getItem("token");
+  if (token) {
+    config.headers.Authorization = token;
+  }
+  return config;
+});
+
 const ComicsPage = () => {
   const [comics, setComics] = useState([]);
   const [favorites, setFavorites] = useState([]);
@@ -16,7 +30,7 @@ const ComicsPage = () => {
   useEffect(() => {
     const fetchComics = async () => {
       try {
-        const response = await axios.get("http://localhost:4000/comics", {
+        const response = await api.get("/comics", {
           params: {
             title: search,
             limit: itemsPerPage,
@@ -34,7 +48,7 @@ const ComicsPage = () => {
     const fetchFavorites = async () => {
       if (token) {
         try {
-          const response = await axios.get("http://localhost:4000/favorites", {
+          const response = await api.get("/favorites", {
             headers: { Authorization: token },
           });
           setFavorites(response.data);
@@ -54,8 +68,8 @@ const ComicsPage = () => {
       return;
     }
     try {
-      await axios.post(
-        "http://localhost:4000/favorites",
+      await api.post(
+        "/favorites",
         { comicId },
         { headers: { Authorization: token } }
       );
