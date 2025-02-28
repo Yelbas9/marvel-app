@@ -12,13 +12,19 @@ const HomePage = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const charactersResponse = await axios.get(`${BASE_URL}/characters`, {
-          params: { limit: 10 },
-        });
+        const charactersResponse = await axios.get(
+          `${BASE_URL.replace(/\/$/, "")}/characters`,
+          {
+            params: { limit: 10 },
+          }
+        );
 
-        const comicsResponse = await axios.get(`${BASE_URL}/comics`, {
-          params: { limit: 10 },
-        });
+        const comicsResponse = await axios.get(
+          `${BASE_URL.replace(/\/$/, "")}/comics`,
+          {
+            params: { limit: 10 },
+          }
+        );
 
         setCharacters(charactersResponse.data.results);
         setComics(comicsResponse.data.results);
